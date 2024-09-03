@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lector de Código QR</title>
+    <script type="text/javascript" src="https://cdn.rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+</head>
+<body>
+    <h2>Escaner de Código QR</h2>
+    <video id="preview"></video>
+    <h3>Contenido:</h3>
+    <p id="content"></p>
+</body>
+<script type="text/javascript">
+    let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+    scanner.addListener('scan', function(content) {
+        alert('Escaneado Código QR: ' + content);
+        document.getElementById('content').innerHTML= content;
+    });
+    Instascan.Camera.getCameras().then(cameras => {
+        if(cameras.length > 0) {
+            scanner.start(cameras[0]);
+        } else {
+            console.error("Por favor, habilite la Cámara");
+        }
+    });
+</script>
+</html>

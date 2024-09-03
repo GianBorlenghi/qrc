@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Código QR con Javascript</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="estilos.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+	<script defer src="app.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+
+
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+			aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<ul class="navbar-nav" id="nav">
+				<li class="nav-item">
+					<a class="nav-link active" id="url" href="#">URL
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#" id="wsp">WhatsApp</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#" id="geo">Crear vCard</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<div class="contenedor">
+		<form action="" id="formulario" class="formulario">
+			<input type="text" id="link" placeholder="Escribe el texto o URL" />
+			<button class="btn">Generar QR</button>
+		</form>
+
+		<form action="" id="formulario_whatsapp" class="formulario hide">
+			<input type="text" id="celular" placeholder="Escribe el celular" />
+			<input type="text" id="texto" placeholder="Escribe el texto" />
+			<button class="btn">Generar QR</button>
+		</form>
+
+
+		<form action="" id="formulario_geo" class="formulario hide"method="post">
+			<fieldset>
+				<legend style="text-decoration: solid;justify-content: center;">Sobre tí</legend>
+			<p><input type="text" name="first_name" size="40" placeholder="Nombre"></p>
+			<p><input type="text" name="last_name" size="40" placeholder="Apellido"></p>
+				<p><input type="text" name="birthday" size="40" placeholder="Fecha Nacimiento"></p>
+				<p><label style="margin-right:30px;display: block;">Genero</label><select name="gender" style="width: 150px;">
+					<option></option>
+					<option value="Mujer">Mujer</option>
+					<option value="Hombre">Hombre</option>
+					<option value="Otro">Otro</option>
+					</select></p>
+			</fieldset>
+			<fieldset>
+				<legend>Casa</legend>
+				<p><input type="text" name="home_street" size="40" placeholder="Calle y número"></p>
+				<p><input type="text" name="home_city" size="40" placeholder="Ciudad"></p>
+				<p><input type="text" name="home_region" size="40" placeholder="Provincia"></p>
+				<p><input type="text" name="home_post" size="40" placeholder="Código postal"></p>
+				<p><input type="text" name="home_country" size="40" placeholder="País"></p>
+				<p><input type="text" name="home_tel" size="40" placeholder="Teléfono"></p>
+				<p><input type="text" name="home_email" size="40" placeholder="E-Mail"></p>
+			</fieldset>
+			<fieldset>
+				<legend>Trabajo</legend>
+				<p><input type="text" name="org_title" size="40" placeholder="Puesto trabajo"></p>
+				<p><input type="text" name="org_name" size="40" placeholder="Nombre de la empresa"></p>
+				<p><input type="text" name="org_street" size="40" placeholder="Calle y número"></p>
+				<p><input type="text" name="org_city" size="40" placeholder="Ciudad"></p>
+				<p><input type="text" name="org_region" size="40" placeholder="Provincia"></p>
+				<p><input type="text" name="org_post" size="40" placeholder="Código postal"></p>
+				<p><input type="text" name="org_country" size="40" placeholder="País"></p>
+				<p><input type="text" name="org_tel" size="40" placeholder="Teléfono"></p>
+				<p><input type="text" name="org_email" size="40" placeholder="E-Mail"></p>
+			</fieldset>
+			
+			<p><input type="button" name="submit" class="btn" value="Generate"></p>
+		</form>
+			
+				</form>
+
+		<div id="contenedorQR" class="contenedorQR"></div>
+	</div>
+
+	
+
+</body>
+
+</html>
