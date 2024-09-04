@@ -195,6 +195,7 @@ a.addEventListener('click', (e) => {
 			}
 			form_wsp.classList.remove('hide');
             document.getElementById("btn2").classList.remove("hide");
+            document.getElementById("uploadButton").classList.add("hide");
 
 			break;
 		case 'url':
@@ -204,6 +205,7 @@ a.addEventListener('click', (e) => {
 			}
 			document.getElementById('formulario').classList.remove('hide');
             document.getElementById("btn2").classList.remove("hide");
+            document.getElementById("uploadButton").classList.add("hide");
 
 			break;
 
@@ -214,11 +216,22 @@ a.addEventListener('click', (e) => {
 			}
 			document.getElementById('formulario_geo').classList.remove('hide');
             document.getElementById("btn2").classList.add("hide");
+            document.getElementById("uploadButton").classList.add("hide");
 
 
 			break;
 
+            case 'archivo':
 
+			for (let i = 0; i < forms.length; i++) {
+				forms[i].classList.add('hide');
+			}
+			document.getElementById('formulario_archivo').classList.remove('hide');
+            document.getElementById("btn2").classList.add("hide");
+            document.getElementById("uploadButton").classList.remove("hide");
+
+
+			break;
 
 
 

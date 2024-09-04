@@ -23,8 +23,12 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
 		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 		crossorigin="anonymous"></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
 
 
+
+	<script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-app-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-storage-compat.js"></script>
 </head>
 
 <body>
@@ -45,7 +49,12 @@
 				<li class="nav-item">
 					<a class="nav-link" href="#" id="geo">Crear vCard</a>
 				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#" id="archivo">QR descarga archivo</a>
+				</li>
+
 			</ul>
+			<a class="nav-link" href="index2.html">Lector</a>
 		</div>
 	</nav>
 	<div class="contenedor">
@@ -61,17 +70,18 @@
 		</form>
 
 
-		<form action="" id="formulario_geo" class="formulario hide"method="post">
+		<form action="" id="formulario_geo" class="formulario hide" method="post">
 			<fieldset>
 				<legend style="text-decoration: solid;justify-content: center;">Sobre tí</legend>
-			<p><input type="text" name="first_name" size="40" placeholder="Nombre"></p>
-			<p><input type="text" name="last_name" size="40" placeholder="Apellido"></p>
+				<p><input type="text" name="first_name" size="40" placeholder="Nombre"></p>
+				<p><input type="text" name="last_name" size="40" placeholder="Apellido"></p>
 				<p><input type="text" name="birthday" size="40" placeholder="Fecha Nacimiento"></p>
-				<p><label style="margin-right:30px;display: block;">Genero</label><select name="gender" style="width: 150px;">
-					<option></option>
-					<option value="Mujer">Mujer</option>
-					<option value="Hombre">Hombre</option>
-					<option value="Otro">Otro</option>
+				<p><label style="margin-right:30px;display: block;">Genero</label><select name="gender"
+						style="width: 150px;">
+						<option></option>
+						<option value="Mujer">Mujer</option>
+						<option value="Hombre">Hombre</option>
+						<option value="Otro">Otro</option>
 					</select></p>
 			</fieldset>
 			<fieldset>
@@ -96,16 +106,74 @@
 				<p><input type="text" name="org_tel" size="40" placeholder="Teléfono"></p>
 				<p><input type="text" name="org_email" size="40" placeholder="E-Mail"></p>
 			</fieldset>
-			
-			<p><input type="button" name="submit" class="btn" value="Generate"></p>
+
+			<p><input type="button" name="submit" class="btn" id="btn2" value="Generate"></p>
 		</form>
-			
-				</form>
+
+		<form action="" id="formulario_archivo" class="formulario hide">
+			<input type="file" id="fileInput">
+		</form>
+		<button id="uploadButton" class="hide">Subir y generar QR</button>
+
+		<!--<h1>Generador de Código QR para Archivos</h1>
+	<input type="file" id="fileInput">
+	<button id="uploadButton">Subir y generar QR</button>
+	<div id="qrcode"></div>-->
 
 		<div id="contenedorQR" class="contenedorQR"></div>
 	</div>
 
-	
+
+
+	<script type="module">
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-app.js";
+		import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-storage.js";
+
+		// Configura tu aplicación Firebase
+		const firebaseConfig = {
+			apiKey: "AIzaSyDGIWfXGuqUmTFblk78s-zogcE9FMtKia8",
+			authDomain: "qrcode-ead83.firebaseapp.com",
+			projectId: "qrcode-ead83",
+			storageBucket: "qrcode-ead83.appspot.com",
+			messagingSenderId: "802090216167",
+			appId: "1:802090216167:web:d28899dc1b35730c8e5042",
+			measurementId: "G-YHTKZQ73M1"
+		};
+		// Inicializa Firebase
+
+		const app = firebase.initializeApp(firebaseConfig);
+		const storage = firebase.storage();
+
+		document.getElementById('uploadButton').addEventListener('click', async function () {
+
+			const fileInput = document.getElementById('fileInput').files[0];
+
+			if (!fileInput) {
+				alert('Por favor, selecciona un archivo.');
+				return;
+			}
+
+			// Subir el archivo a Firebase Storage
+			const storageRef = storage.ref('uploads/' + fileInput.name);
+			await storageRef.put(fileInput);
+			const fileURL = await storageRef.getDownloadURL();
+
+			// Crear código QR con la URL del archivo
+			/* QRCode.makeCode(document.getElementById('qrcode'), fileURL, function (error) {
+				 if (error) {
+					 console.error(error);
+					 alert('No se pudo generar el código QR.');
+				 } else {
+					 console.log('Código QR generado con éxito.');
+				 }
+			 });*/
+			console.log(fileURL)
+			const QR = new QRCode(contenedorQR);
+			QR.makeCode(fileURL)
+		});
+
+	</script>
+
 
 </body>
 
