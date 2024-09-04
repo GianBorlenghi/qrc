@@ -13,33 +13,33 @@ var act = "url";
 var script = document.createElement('script');
 script.src = 'https://code.jquery.com/jquery-3.6.3.min.js'; // Check https://jquery.com/ for the current version
 document.getElementsByTagName('head')[0].appendChild(script);
-var vcard= {
-    str_start:'BEGIN:VCARD\nVERSION:3.0\n',
-    str_vcard:'BEGIN:VCARD\nVERSION:3.0\n',
-    str_end:'\nEND:VCARD',
-    goog_chart:'http://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=',
-    form:[],
-    get_field: function(field){
-        for(var i in vcard.form){
-            if(vcard.form[i].name === field){ 
-                return vcard.form[i].value.replace(/^\s+|\s+$/g,"");
-            } 
+var vcard = {
+    str_start: 'BEGIN:VCARD\nVERSION:3.0\n',
+    str_vcard: 'BEGIN:VCARD\nVERSION:3.0\n',
+    str_end: '\nEND:VCARD',
+    goog_chart: 'http://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=',
+    form: [],
+    get_field: function (field) {
+        for (var i in vcard.form) {
+            if (vcard.form[i].name === field) {
+                return vcard.form[i].value.replace(/^\s+|\s+$/g, "");
+            }
         }
     },
-    add_you: function(){
+    add_you: function () {
         var first_name = vcard.get_field("first_name"),
             last_name = vcard.get_field("last_name"),
             birthday = vcard.get_field('birthday'),
             gender = vcard.get_field('gender');
-        
-        vcard.str_vcard += 'N:'+last_name+';'+first_name+'\n'+
-                            'FN:'+first_name+' '+last_name;
+
+        vcard.str_vcard += 'N:' + last_name + ';' + first_name + '\n' +
+            'FN:' + first_name + ' ' + last_name;
         // TODO convert date to american format
-        if(birthday !== ''){ vcard.str_vcard += '\nBDAY:'+birthday; }
-        
-        if(gender !== ''){ vcard.str_vcard += '\nX-GENDER:'+gender; }
+        if (birthday !== '') { vcard.str_vcard += '\nBDAY:' + birthday; }
+
+        if (gender !== '') { vcard.str_vcard += '\nX-GENDER:' + gender; }
     },
-    add_address: function(){
+    add_address: function () {
         var home_street = vcard.get_field("home_street"),
             home_city = vcard.get_field("home_city"),
             home_region = vcard.get_field("home_region"),
@@ -50,197 +50,207 @@ var vcard= {
             org_region = vcard.get_field("org_region"),
             org_post = vcard.get_field("org_post"),
             org_country = vcard.get_field("org_country");
-        
-        if(home_street+home_city+home_region+home_post+home_country !== ''){
-            vcard.str_vcard += '\nADR;TYPE=Personal:;;'+home_street+';'+home_city+';'+home_region+
-                            ';'+home_post+';'+home_country;
+
+        if (home_street + home_city + home_region + home_post + home_country !== '') {
+            vcard.str_vcard += '\nADR;TYPE=Personal:;;' + home_street + ';' + home_city + ';' + home_region +
+                ';' + home_post + ';' + home_country;
         }
-        if(org_street+org_city+org_region+org_post+org_country !== ''){
-            vcard.str_vcard += '\nADR;TYPE=Trabajo:;;'+org_street+';'+org_city+';'+org_region+
-                            ';'+org_post+';'+org_country;
+        if (org_street + org_city + org_region + org_post + org_country !== '') {
+            vcard.str_vcard += '\nADR;TYPE=Trabajo:;;' + org_street + ';' + org_city + ';' + org_region +
+                ';' + org_post + ';' + org_country;
         }
-      }, 
-    add_tel: function(){
-     var home = vcard.get_field("home_tel"),
-         work = vcard.get_field("org_tel");
-        
-        if(home !== ''){ vcard.str_vcard += '\nTEL;TYPE=Personal:'+home; }
-        
-        if(work !== ''){ vcard.str_vcard += '\nTEL;TYPE=Trabajo:'+work; }
     },
-    add_email: function(){
-       var home = vcard.get_field("home_email"),
-         work = vcard.get_field("org_email");
-        
-        if(home !== ''){ vcard.str_vcard += '\nEMAIL;TYPE=Personal:'+home; }
-        
-        if(work !== ''){ vcard.str_vcard += '\nEMAIL;TYPE=Trabajok:'+work; }
+    add_tel: function () {
+        var home = vcard.get_field("home_tel"),
+            work = vcard.get_field("org_tel");
+
+        if (home !== '') { vcard.str_vcard += '\nTEL;TYPE=Personal:' + home; }
+
+        if (work !== '') { vcard.str_vcard += '\nTEL;TYPE=Trabajo:' + work; }
     },
-    add_url: function(){
-       var home = vcard.get_field("home_url"),
-         work = vcard.get_field("org_url");
-        
-        if(home !== ''){ vcard.str_vcard += '\nURL;TYPE=home:'+home; }
-        
-        if(work !== ''){ vcard.str_vcard += '\nURL;TYPE=work:'+work; }
+    add_email: function () {
+        var home = vcard.get_field("home_email"),
+            work = vcard.get_field("org_email");
+
+        if (home !== '') { vcard.str_vcard += '\nEMAIL;TYPE=Personal:' + home; }
+
+        if (work !== '') { vcard.str_vcard += '\nEMAIL;TYPE=Trabajok:' + work; }
     },
-    add_work: function(){
-       var name = vcard.get_field("org_name"),
-           title = vcard.get_field("org_title");
-        
-        if(name !== ''){ vcard.str_vcard += '\nORG:'+name; }
-        
-        if(title !== ''){ vcard.str_vcard +='\nTITLE:'+title; }
+    add_url: function () {
+        var home = vcard.get_field("home_url"),
+            work = vcard.get_field("org_url");
+
+        if (home !== '') { vcard.str_vcard += '\nURL;TYPE=home:' + home; }
+
+        if (work !== '') { vcard.str_vcard += '\nURL;TYPE=work:' + work; }
     },
-     
-    required_check: function(){
+    add_work: function () {
+        var name = vcard.get_field("org_name"),
+            title = vcard.get_field("org_title");
+
+        if (name !== '') { vcard.str_vcard += '\nORG:' + name; }
+
+        if (title !== '') { vcard.str_vcard += '\nTITLE:' + title; }
+    },
+
+    required_check: function () {
         var first_name = vcard.get_field("first_name"),
             last_name = vcard.get_field("last_name"),
             msg = 'Field%FIELD% %NAME% %VERB% required.',
             fields = [];
-        
-        if(first_name === ''){ fields.push('First name'); }
-        
-        if(last_name === ''){ fields.push('Last name'); }
-        
-        if(fields.length === 0){ return ''; }
-        
-        msg = msg.replace('%NAME%',fields.join(', '));
-        
-        msg = msg.replace('%FIELD%',(fields.length === 1) ? '' : 's');
-        
-        msg = msg.replace('%VERB%',(fields.length === 1) ? 'is' : 'are'); 
-            
+
+        if (first_name === '') { fields.push('First name'); }
+
+        if (last_name === '') { fields.push('Last name'); }
+
+        if (fields.length === 0) { return ''; }
+
+        msg = msg.replace('%NAME%', fields.join(', '));
+
+        msg = msg.replace('%FIELD%', (fields.length === 1) ? '' : 's');
+
+        msg = msg.replace('%VERB%', (fields.length === 1) ? 'is' : 'are');
+
         return msg;
     },
-    save: function(){
+    save: function () {
         vcard.form = $('form').serializeArray();
-        
+
         var required_check_output = vcard.required_check();
-        
-        if(required_check_output !== ''){
+
+        if (required_check_output !== '') {
             alert(required_check_output);
             return;
         }
-        
+
         vcard.add_you();
-        
+
         vcard.add_address();
-        
+
         vcard.add_tel();
-        
+
         vcard.add_email();
-        
+
         vcard.add_url();
-        
+
         vcard.add_work();
-        
+
         //vcard.add_social();
-        
+
         vcard.str_vcard += vcard.str_end;
-        
+
         $('textarea[name="vcard"]').val(vcard.str_vcard);
         QR.makeCode(vcard.str_vcard)
-                $('#qr').attr('src',vcard.goog_chart+vcard.str_vcard.replace(/\n/g,'%0A'));
-        
+        $('#qr').attr('src', vcard.goog_chart + vcard.str_vcard.replace(/\n/g, '%0A'));
+
         vcard.str_vcard = vcard.str_start;
-        
-       
+
+
     }
 };
 
-$(function(){
+$(function () {
     $('input[name="submit"]').click(vcard.save);
-  
+
 });
 
 
 
 formulario.addEventListener('submit', (e) => {
-	e.preventDefault();
-	QR.makeCode(formulario.link.value);
+    e.preventDefault();
+    QR.makeCode(formulario.link.value);
 
-	console.log(this.act)
+    console.log(this.act)
 });
 
+document.getElementById("download").addEventListener('click', (e) => {
+    e.preventDefault();
+    var source = document.getElementById("contenedorQR").children[1].src;
+    var a = document.createElement('a');
+    a.download = true;
+    a.target = '_blank';
+    a.href = source;
+    a.click();
+})
+
 formulario_whatsapp.addEventListener('submit', (e) => {
-	e.preventDefault();
-	const txt = formulario_wsp.texto.value
-	
-	QR.makeCode("https://wa.me/"+ formulario_wsp.celular.value+ "/?text="+ txt.split(" ").join("%20")) +"%20";
-	console.log("https://wa.me/"+ formulario_wsp.celular.value+ "/?text="+ txt.split(" ").join("%20"))+"%20";
+    e.preventDefault();
+    const txt = formulario_wsp.texto.value
+
+    QR.makeCode("https://wa.me/" + formulario_wsp.celular.value + "/?text=" + txt.split(" ").join("%20")) + "%20";
+    console.log("https://wa.me/" + formulario_wsp.celular.value + "/?text=" + txt.split(" ").join("%20")) + "%20";
 });
 
 formulario_geo.addEventListener('submit', (e) => {
-	e.preventDefault();
-	QR.makeCode(vcard.form);
-	console.log(vcard.str_vcard)
+    e.preventDefault();
+    QR.makeCode(vcard.form);
+    console.log(vcard.str_vcard)
 });
 
 a.addEventListener('click', (e) => {
-	e.preventDefault();
-	const tg = e.target;
+    e.preventDefault();
+    const tg = e.target;
 
-	for (let i = 0; i < elem.length; i++) {
-		elem[i].classList.remove('active');
-	}
-	tg.classList.add("active")
-	const active = document.getElementsByClassName('active')[0].getAttribute('id')
-	this.act = active;
-	switch (active) {
-		case 'wsp':
-			const form_wsp = document.getElementById('formulario_whatsapp');
-			for (let i = 0; i < forms.length; i++) {
-				forms[i].classList.add('hide');
-			}
-			form_wsp.classList.remove('hide');
+    for (let i = 0; i < elem.length; i++) {
+        elem[i].classList.remove('active');
+    }
+    tg.classList.add("active")
+    const active = document.getElementsByClassName('active')[0].getAttribute('id')
+    this.act = active;
+    switch (active) {
+        case 'wsp':
+            const form_wsp = document.getElementById('formulario_whatsapp');
+            for (let i = 0; i < forms.length; i++) {
+                forms[i].classList.add('hide');
+            }
+            form_wsp.classList.remove('hide');
             document.getElementById("btn2").classList.remove("hide");
             document.getElementById("uploadButton").classList.add("hide");
 
-			break;
-		case 'url':
+            break;
+        case 'url':
 
-			for (let i = 0; i < forms.length; i++) {
-				forms[i].classList.add('hide');
-			}
-			document.getElementById('formulario').classList.remove('hide');
+            for (let i = 0; i < forms.length; i++) {
+                forms[i].classList.add('hide');
+            }
+            document.getElementById('formulario').classList.remove('hide');
             document.getElementById("btn2").classList.remove("hide");
             document.getElementById("uploadButton").classList.add("hide");
 
-			break;
+            break;
 
-		case 'geo':
+        case 'geo':
 
-			for (let i = 0; i < forms.length; i++) {
-				forms[i].classList.add('hide');
-			}
-			document.getElementById('formulario_geo').classList.remove('hide');
+            for (let i = 0; i < forms.length; i++) {
+                forms[i].classList.add('hide');
+            }
+            document.getElementById('formulario_geo').classList.remove('hide');
             document.getElementById("btn2").classList.add("hide");
             document.getElementById("uploadButton").classList.add("hide");
 
 
-			break;
+            break;
 
-            case 'archivo':
+        case 'archivo':
 
-			for (let i = 0; i < forms.length; i++) {
-				forms[i].classList.add('hide');
-			}
-			document.getElementById('formulario_archivo').classList.remove('hide');
+            for (let i = 0; i < forms.length; i++) {
+                forms[i].classList.add('hide');
+            }
+            document.getElementById('formulario_archivo').classList.remove('hide');
             document.getElementById("btn2").classList.add("hide");
             document.getElementById("uploadButton").classList.remove("hide");
 
 
-			break;
+            break;
 
 
 
 
 
-		default:
-			break;
-	}
-
+        default:
+            break;
+    }
 })
+
 
 
