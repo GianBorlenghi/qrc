@@ -171,21 +171,24 @@ var source = document.getElementById("contenedorQR").children[1].src;
 
 
 
+e.preventDefault();
+var source = document.getElementById("contenedorQR").children[1].src;
+
 // Verificar que el src realmente apunta a una imagen
 if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
-    // Convertir la imagen a un Blob y descargarla
     fetch(source)
-        .then(res => {
-            if (res.ok) {
-                return res.blob();
-            }
-            throw new Error('No se pudo descargar la imagen.');
-        })
+        .then(res => res.blob())
         .then(blob => {
+            // Crear un enlace de descarga
             var a = document.createElement('a');
             var url = window.URL.createObjectURL(blob);
             a.href = url;
-            a.download = 'imagen_qr.png'; // Nombre del archivo
+
+            // Forzar la extensión correcta
+            var extension = blob.type.split('/')[1];
+            var filename = 'imagen_qr.' + extension;
+
+            a.download = filename; // Nombre del archivo con la extensión correcta
             document.body.appendChild(a);
             a.click();
 
