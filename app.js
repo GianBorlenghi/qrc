@@ -164,7 +164,7 @@ formulario.addEventListener('submit', (e) => {
 });
 
 document.getElementById("download").addEventListener('click', (e) => {
-    e.preventDefault();
+  /*  e.preventDefault();
     var source = document.getElementById("contenedorQR").children[1].src;
 
     // Crear un enlace temporal
@@ -182,7 +182,27 @@ document.getElementById("download").addEventListener('click', (e) => {
     a.click();
 
     // Eliminar el enlace temporal
-    document.body.removeChild(a);
+    document.body.removeChild(a);*/
+
+    e.preventDefault();
+var source = document.getElementById("contenedorQR").children[1].src;
+
+// Convertir la imagen a un Blob
+fetch(source)
+    .then(res => res.blob())
+    .then(blob => {
+        var a = document.createElement('a');
+        var url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = 'imagen_qr.png'; // Nombre del archivo
+        document.body.appendChild(a);
+        a.click();
+
+        // Limpiar
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    })
+    .catch(err => console.error('Error al descargar la imagen: ', err));
 });
 
 formulario_whatsapp.addEventListener('submit', (e) => {
