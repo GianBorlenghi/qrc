@@ -159,32 +159,45 @@ $(function () {
 formulario.addEventListener('submit', (e) => {
     e.preventDefault();
     QR.makeCode(formulario.link.value);
-
+    document.getElementById("download").classList.remove("hide")
     console.log(this.act)
 });
 
 document.getElementById("download").addEventListener('click', (e) => {
     e.preventDefault();
     var source = document.getElementById("contenedorQR").children[1].src;
+
+    // Crear un enlace temporal
     var a = document.createElement('a');
-    a.download = true;
-    a.target = '_blank';
     a.href = source;
+
+    // Establecer el nombre del archivo a descargar
+    a.download = 'imagen_qr.png'; // Puedes cambiar el nombre del archivo si lo deseas
+
+    // Asegurarte de que funcione en dispositivos móviles
+    a.style.display = 'none';
+    document.body.appendChild(a);
+
+    // Simular el clic
     a.click();
-})
+
+    // Eliminar el enlace temporal
+    document.body.removeChild(a);
+});
 
 formulario_whatsapp.addEventListener('submit', (e) => {
     e.preventDefault();
     const txt = formulario_wsp.texto.value
 
     QR.makeCode("https://wa.me/" + formulario_wsp.celular.value + "/?text=" + txt.split(" ").join("%20")) + "%20";
-    console.log("https://wa.me/" + formulario_wsp.celular.value + "/?text=" + txt.split(" ").join("%20")) + "%20";
+    document.getElementById("download").classList.remove("hide")
+
 });
 
 formulario_geo.addEventListener('submit', (e) => {
     e.preventDefault();
     QR.makeCode(vcard.form);
-    console.log(vcard.str_vcard)
+    document.getElementById("download").classList.remove("hide")
 });
 
 a.addEventListener('click', (e) => {
