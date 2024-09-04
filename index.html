@@ -52,6 +52,9 @@
 				<li class="nav-item">
 					<a class="nav-link" href="#" id="archivo">QR descarga archivo</a>
 				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#" id="mail">QR Envío mail</a>
+				</li>
 
 			</ul>
 			<a class="nav-link" href="index2.html">Lector</a>
@@ -110,6 +113,13 @@
 			<p><input type="button" name="submit" class="btn" id="btn2" value="Generate"></p>
 		</form>
 
+		<form action="" id="formulario_mail" class="formulario hide">
+			<input type="email" id="mail" placeholder="Escribe el mail" />
+			<input type="text" id="asunto" placeholder="Escribe el Asunto" />
+			<input type="text" id="texto" placeholder="Escribe el texto" />
+			<button class="btn">Generar QR</button>
+		</form>
+
 		<form action="" id="formulario_archivo" class="formulario hide">
 			<input type="file" id="fileInput">
 		</form>
@@ -129,7 +139,6 @@
 	<script type="module">
 		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-app.js";
 		import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-storage.js";
-
 		// Configura tu aplicación Firebase
 		const firebaseConfig = {
 			apiKey: "AIzaSyDGIWfXGuqUmTFblk78s-zogcE9FMtKia8",
@@ -169,8 +178,10 @@
 				 }
 			 });*/
 			console.log(fileURL)
-			const QR = new QRCode(contenedorQR);
+			document.getElementById("download").classList.remove("hide")
 			QR.makeCode(fileURL)
+			console.log(QR)
+			//QR.makeCode(fileURL)
 		});
 
 	</script>

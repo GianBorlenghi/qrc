@@ -1,3 +1,4 @@
+
 const contenedorQR = document.getElementById('contenedorQR');
 const formulario = document.getElementById('formulario');
 const formulario_wsp = document.getElementById('formulario_whatsapp');
@@ -6,7 +7,6 @@ const elem = document.getElementsByClassName('nav-link');
 const forms = document.getElementsByClassName('formulario');
 const QR = new QRCode(contenedorQR);
 var act = "url";
-
 
 
 
@@ -186,8 +186,11 @@ if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
 
             // Forzar la extensión correcta
             var extension = blob.type.split('/')[1];
-            var filename = 'imagen_qr.' + extension;
-
+            let nombreArchivo = prompt("Ingrese el nombre del archivo a guardar")
+            if(nombreArchivo.length== 0){
+                nombreArchivo = "QR"
+            }
+            var filename = nombreArchivo+'.' + extension;
             a.download = filename; // Nombre del archivo con la extensión correcta
             document.body.appendChild(a);
             a.click();
@@ -216,6 +219,15 @@ formulario_geo.addEventListener('submit', (e) => {
     QR.makeCode(vcard.form);
     document.getElementById("download").classList.remove("hide")
 });
+
+formulario_mail.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const asunto = formulario_mail.asunto.value;
+    const cuerpo = formulario_mail.texto.value
+    QR.makeCode("mailto:"+formulario_mail.mail.value+"?subject="+asunto.split(" ").join("%20")+"&body="+cuerpo.split(" ").join("%20"));
+    document.getElementById("download").classList.remove("hide")
+});
+
 
 a.addEventListener('click', (e) => {
     e.preventDefault();
@@ -246,7 +258,7 @@ a.addEventListener('click', (e) => {
             document.getElementById('formulario').classList.remove('hide');
             document.getElementById("btn2").classList.remove("hide");
             document.getElementById("uploadButton").classList.add("hide");
-
+            QR.delete()
             break;
 
         case 'geo':
@@ -272,7 +284,17 @@ a.addEventListener('click', (e) => {
 
 
             break;
+            case 'mail':
 
+            for (let i = 0; i < forms.length; i++) {
+                forms[i].classList.add('hide');
+            }
+            document.getElementById('formulario_mail').classList.remove('hide');
+            document.getElementById("btn2").classList.add("hide");
+            document.getElementById("uploadButton").classList.add("hide");
+
+
+            break;
 
 
 
@@ -283,4 +305,6 @@ a.addEventListener('click', (e) => {
 })
 
 
-
+function getQR(){
+    return QR;
+}
