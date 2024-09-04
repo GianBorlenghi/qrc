@@ -128,7 +128,7 @@
 		</form>
 
 		<form action="" id="formulario_archivo" class="formulario hide">
-			<input type="file" id="fileInput">
+			<input style="padding:10px;" type="file" id="fileInput">
 		</form>
 		<button id="uploadButton" class="hide">Subir y generar QR</button>
 
@@ -162,7 +162,8 @@
 		const storage = firebase.storage();
 
 		document.getElementById('uploadButton').addEventListener('click', async function () {
-
+			document.getElementById("uploadButton").innerText = "Generando..."
+			$("#uploadButton").prop('disabled',true)
 			const fileInput = document.getElementById('fileInput').files[0];
 
 			if (!fileInput) {
@@ -184,10 +185,10 @@
 					 console.log('Código QR generado con éxito.');
 				 }
 			 });*/
-			console.log(fileURL)
 			document.getElementById("download").classList.remove("hide")
 			QR.makeCode(fileURL)
-			console.log(QR)
+			document.getElementById("uploadButton").innerText ="Subir y generar QR"
+			$("#uploadButton").prop('disabled',false)
 			//QR.makeCode(fileURL)
 		});
 
