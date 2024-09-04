@@ -11,6 +11,52 @@
 
 body {
 	font-family: 'Open Sans', sans-serif;
+	
+}
+header {
+    border-bottom: 2px solid #999;
+    height: 12vh;
+    background-color: #0A2647;
+    color: #fff;
+}
+
+nav li>a {
+    color: #2C74B3;
+}
+
+figure {
+    display: inline-block;
+    padding: 5px;
+	border-right:1px solid black;
+	border-bottom:1px solid black;
+}
+
+.logo {
+    width: 160px;
+    height: 80px;
+}
+
+nav ul>li {
+    display: inline-block;
+    padding: 5px;
+    margin-left: 30px;
+}
+
+nav ul {
+    position: absolute;
+    right: 10px;
+  
+}
+
+nav ul>li a {
+    border: 1px solid rgba(44, 116, 179, .3);
+    border-radius: 10px;
+    z-index: 100;
+}
+
+nav ul>li a:hover {
+    background-color: #2C74B3;
+    
 }
 
 .contenedor {

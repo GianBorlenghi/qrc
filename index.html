@@ -5,7 +5,9 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Código QR con Javascript</title>
+	<title>Generador de QR (CENS)</title>
+	<link rel="icon" href="./img/cens.ico" type="image/x-icon">
+
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet" />
@@ -30,14 +32,16 @@
 	<script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-app-compat.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-storage-compat.js"></script>
 </head>
-
-<body>
+<header class=" sticky-top">
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
 			aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+		<figure>
+			<a href="./index.html"><img class="logo" src="./img/cens.png" alt=""></a>
+		  </figure>
+		<div class="collapse navbar-collapse" id="navbarNavDropdown" style="height:100px">
 			<ul class="navbar-nav" id="nav">
 				<li class="nav-item">
 					<a class="nav-link active" id="url" href="#">URL
@@ -60,6 +64,9 @@
 			<a class="nav-link" href="index2.html">Lector</a>
 		</div>
 	</nav>
+  </header>
+<body>
+	<!---->
 	<div class="contenedor">
 		<form action="" id="formulario" class="formulario">
 			<input type="text" id="link" placeholder="Escribe el texto o URL" />
