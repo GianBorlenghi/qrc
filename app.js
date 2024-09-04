@@ -164,45 +164,39 @@ formulario.addEventListener('submit', (e) => {
 });
 
 document.getElementById("download").addEventListener('click', (e) => {
-  /*  e.preventDefault();
-    var source = document.getElementById("contenedorQR").children[1].src;
-
-    // Crear un enlace temporal
-    var a = document.createElement('a');
-    a.href = source;
-
-    // Establecer el nombre del archivo a descargar
-    a.download = 'imagen_qr.png'; // Puedes cambiar el nombre del archivo si lo deseas
-
-    // Asegurarte de que funcione en dispositivos móviles
-    a.style.display = 'none';
-    document.body.appendChild(a);
-
-    // Simular el clic
-    a.click();
-
-    // Eliminar el enlace temporal
-    document.body.removeChild(a);*/
+  
 
     e.preventDefault();
 var source = document.getElementById("contenedorQR").children[1].src;
 
-// Convertir la imagen a un Blob
-fetch(source)
-    .then(res => res.blob())
-    .then(blob => {
-        var a = document.createElement('a');
-        var url = window.URL.createObjectURL(blob);
-        a.href = url;
-        a.download = 'imagen_qr.png'; // Nombre del archivo
-        document.body.appendChild(a);
-        a.click();
 
-        // Limpiar
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-    })
-    .catch(err => console.error('Error al descargar la imagen: ', err));
+
+// Verificar que el src realmente apunta a una imagen
+if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
+    // Convertir la imagen a un Blob y descargarla
+    fetch(source)
+        .then(res => {
+            if (res.ok) {
+                return res.blob();
+            }
+            throw new Error('No se pudo descargar la imagen.');
+        })
+        .then(blob => {
+            var a = document.createElement('a');
+            var url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = 'imagen_qr.png'; // Nombre del archivo
+            document.body.appendChild(a);
+            a.click();
+
+            // Limpiar
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        })
+        .catch(err => console.error('Error al descargar la imagen: ', err));
+} else {
+    console.error('El source no apunta a una imagen válida.');
+}
 });
 
 formulario_whatsapp.addEventListener('submit', (e) => {
