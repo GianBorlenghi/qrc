@@ -245,7 +245,13 @@ document.getElementById("download").addEventListener('click', function (e) {
     } else {
         console.error('El source no apunta a una imagen válida.');
     }
+    logMessage('Botón descargar presionado');
+ 
 });
+
+function logMessage(msg) {
+    document.getElementById('error-log').innerText += msg + '\n';
+}
 
 formulario_whatsapp.addEventListener('submit', (e) => {
     e.preventDefault();
