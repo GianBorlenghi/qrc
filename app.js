@@ -162,8 +162,7 @@ formulario.addEventListener('submit', (e) => {
     document.getElementById("download").classList.remove("hide")
     console.log(this.act)
 });
-
-/*document.getElementById("download").addEventListener('click', (e) => {
+document.getElementById("download").addEventListener('click', (e) => {
   
 
     e.preventDefault();
@@ -203,99 +202,9 @@ if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
 } else {
     console.error('El source no apunta a una imagen válida.');
 }
-});*/
-
-function logMessage(msg) {
-    document.getElementById('error-log').innerText += msg + '\n';
-}
-
-document.getElementById("download").addEventListener('click', function (e) {
-    e.preventDefault();
-    logMessage('Botón descargar presionado');
-
-    var contenedorQR = document.getElementById("contenedorQR");
-    if (contenedorQR) {
-        logMessage('contenedorQR encontrado.');
-
-        if (contenedorQR.children.length > 1) {
-            var elemento = contenedorQR.children[1];
-            logMessage('Tipo de elemento: ' + elemento.tagName);
-
-            if (elemento.tagName === 'IMG') {
-                logMessage('El segundo hijo es una imagen.');
-
-                var source = elemento.src;
-
-                // Verificar si el src es nulo o vacío
-                if (!source || source === 'null') {
-                    logMessage('El source de la imagen es nulo o vacío. Asegúrate de que la imagen se haya cargado correctamente.');
-                    alert('La imagen no está lista para descargar. Intenta nuevamente.');
-                    return;
-                }
-
-                logMessage('Valor del source antes de la descarga: ' + source);
-
-                // Verificar si el src realmente apunta a una imagen
-                if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
-                    logMessage('El source apunta a una imagen válida.');
-
-                    // Esperar a que la imagen se cargue completamente
-                    elemento.onload = function() {
-                        logMessage('Imagen cargada correctamente.');
-                        // Código para manejar la imagen (móvil/desktop)...
-                        // Abre la imagen en una nueva pestaña en móvil
-                        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-                            logMessage('Intentando abrir en una nueva pestaña en móvil.');
-                            window.open(source, '_blank');
-                        } else {
-                            // Descargar la imagen en escritorio
-                            fetch(source)
-                                .then(res => res.blob())
-                                .then(blob => {
-                                    var a = document.createElement('a');
-                                    var url = window.URL.createObjectURL(blob);
-                                    a.href = url;
-
-                                    var extension = blob.type.split('/')[1];
-                                    let nombreArchivo = prompt("Ingrese el nombre del archivo a guardar");
-                                    if (nombreArchivo.length == 0) {
-                                        nombreArchivo = "QR";
-                                    }
-                                    var filename = nombreArchivo + '.' + extension;
-                                    a.download = filename; // Nombre del archivo con la extensión correcta
-                                    document.body.appendChild(a);
-                                    a.click();
-
-                                    // Limpiar
-                                    window.URL.revokeObjectURL(url);
-                                    document.body.removeChild(a);
-                                    logMessage('Descarga completada: ' + filename);
-                                })
-                                .catch(err => {
-                                    logMessage('Error al descargar la imagen: ' + err);
-                                    console.error('Error al descargar la imagen: ', err);
-                                });
-                        }
-                    };
-
-                    // Si la imagen ya está cargada, ejecuta el onload
-                    if (elemento.complete) {
-                        elemento.onload();
-                    }
-                } else {
-                    logMessage('El source no apunta a una imagen válida.');
-                    console.error('El source no apunta a una imagen válida: ', source);
-                }
-            } else {
-                logMessage('El segundo hijo no es una imagen.');
-            }
-        } else {
-            logMessage('contenedorQR no tiene un segundo hijo.');
-        }
-    } else {
-        logMessage('contenedorQR no encontrado.');
-    }
 });
+
+
 
 
 
