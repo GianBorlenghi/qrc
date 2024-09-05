@@ -6,6 +6,8 @@ const a = document.getElementById('nav');
 const elem = document.getElementsByClassName('nav-link');
 const forms = document.getElementsByClassName('formulario');
 const QR = new QRCode(contenedorQR);
+QR._android = true;
+QR._oDrawing._android = true;
 var act = "url";
 
 
@@ -248,6 +250,7 @@ formulario_mail.addEventListener('submit', (e) => {
     const asunto = formulario_mail.asunto.value;
     const cuerpo = formulario_mail.texto.value
     QR.makeCode("mailto:"+formulario_mail.mail.value+"?subject="+asunto.split(" ").join("%20")+"&body="+cuerpo.split(" ").join("%20"));
+    console.log(QR)
     document.getElementById("download").classList.remove("hide")
 });
 
