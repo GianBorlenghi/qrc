@@ -168,11 +168,7 @@ document.getElementById("download").addEventListener('click', (e) => {
     e.preventDefault();
 var source = document.getElementById("contenedorQR").children[1].src;
 
-
-
-e.preventDefault();
-var source = document.getElementById("contenedorQR").children[1].src;
-
+document.getElementById("respuesta").innerHTML = source
 // Verificar que el src realmente apunta a una imagen
 if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
     fetch(source)
@@ -181,8 +177,8 @@ if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
             // Crear un enlace de descarga
             var a = document.createElement('a');
             var url = window.URL.createObjectURL(blob);
-            a.href = url;
-
+           a.href = url;
+            console.log(blob)
             // Forzar la extensión correcta
             var extension = blob.type.split('/')[1];
             let nombreArchivo = prompt("Ingrese el nombre del archivo a guardar")
