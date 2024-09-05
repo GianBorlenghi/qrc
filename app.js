@@ -162,7 +162,7 @@ formulario.addEventListener('submit', (e) => {
     document.getElementById("download").classList.remove("hide")
     console.log(this.act)
 });
-document.getElementById("download").addEventListener('click', (e) => {
+/*document.getElementById("download").addEventListener('click', (e) => {
   
 
     e.preventDefault();
@@ -177,7 +177,7 @@ if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
             // Crear un enlace de descarga
             var a = document.createElement('a');
             var url = window.URL.createObjectURL(blob);
-           a.href = url;
+            a.href = source;
             // Forzar la extensión correcta
             var extension = blob.type.split('/')[1];
             let nombreArchivo = prompt("Ingrese el nombre del archivo a guardar")
@@ -197,9 +197,34 @@ if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
 } else {
     console.error('El source no apunta a una imagen válida.');
 }
+});*/
+
+document.getElementById("download").addEventListener('click', (e) => {
+    e.preventDefault();
+    
+    var img = document.getElementById("contenedorQR").children[1];
+    var source = img.src;
+
+    // Verificar si es una imagen válida
+    if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
+        fetch(source)
+            .then(res => res.blob())
+            .then(blob => {
+                let nombreArchivo = prompt("Ingrese el nombre del archivo a guardar");
+                if (nombreArchivo.length == 0) {
+                    nombreArchivo = "QR";
+                }
+                var extension = blob.type.split('/')[1];
+                var filename = nombreArchivo + '.' + extension;
+                
+                // Utilizar FileSaver.js para descargar el archivo
+                saveAs(blob, filename);
+            })
+            .catch(err => console.error('Error al descargar la imagen: ', err));
+    } else {
+        console.error('El source no apunta a una imagen válida.');
+    }
 });
-
-
 
 
 
