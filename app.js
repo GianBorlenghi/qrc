@@ -212,55 +212,68 @@ document.getElementById("download").addEventListener('click', function (e) {
     e.preventDefault();
     logMessage('Botón descargar presionado');
 
-    var source = document.getElementById("contenedorQR").children[1].src;
-    logMessage('Fuente de la imagen: ' + source);
+    // Verificar si el contenedorQR existe
+    var contenedorQR = document.getElementById("contenedorQR");
+    if (contenedorQR) {
+        logMessage('contenedorQR encontrado.');
 
-    // Verificar si el src realmente apunta a una imagen
-    if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
-        logMessage('El source apunta a una imagen válida.');
+        // Verificar si tiene al menos 2 hijos (el índice 1 es el segundo hijo)
+        if (contenedorQR.children.length > 1) {
+            logMessage('Segundo hijo del contenedorQR encontrado.');
 
-        // Detectar si estamos en un dispositivo móvil
-        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        logMessage('Dispositivo móvil detectado: ' + isMobile);
+            var source = contenedorQR.children[1].src;
+            logMessage('Fuente de la imagen: ' + source);
 
-        if (isMobile) {
-            // En móviles, abrir la imagen en una nueva pestaña
-            logMessage('Intentando abrir en una nueva pestaña en móvil.');
-            window.open(source, '_blank');
+            // Verificar si el src realmente apunta a una imagen
+            if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
+                logMessage('El source apunta a una imagen válida.');
+
+                // Detectar si estamos en un dispositivo móvil
+                var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                logMessage('Dispositivo móvil detectado: ' + isMobile);
+
+                if (isMobile) {
+                    logMessage('Intentando abrir en una nueva pestaña en móvil.');
+                    window.open(source, '_blank');
+                } else {
+                    logMessage('Intentando descargar la imagen en escritorio.');
+                    fetch(source)
+                        .then(res => res.blob())
+                        .then(blob => {
+                            var a = document.createElement('a');
+                            var url = window.URL.createObjectURL(blob);
+                            a.href = url;
+
+                            // Forzar la extensión correcta
+                            var extension = blob.type.split('/')[1];
+                            let nombreArchivo = prompt("Ingrese el nombre del archivo a guardar");
+                            if (nombreArchivo.length == 0) {
+                                nombreArchivo = "QR";
+                            }
+                            var filename = nombreArchivo + '.' + extension;
+                            a.download = filename; // Nombre del archivo con la extensión correcta
+                            document.body.appendChild(a);
+                            a.click();
+
+                            // Limpiar
+                            window.URL.revokeObjectURL(url);
+                            document.body.removeChild(a);
+                            logMessage('Descarga completada: ' + filename);
+                        })
+                        .catch(err => {
+                            logMessage('Error al descargar la imagen: ' + err);
+                            console.error('Error al descargar la imagen: ', err);
+                        });
+                }
+            } else {
+                logMessage('El source no apunta a una imagen válida.');
+                console.error('El source no apunta a una imagen válida.');
+            }
         } else {
-            // En escritorio, descargar el archivo como blob
-            logMessage('Intentando descargar la imagen en escritorio.');
-            fetch(source)
-                .then(res => res.blob())
-                .then(blob => {
-                    var a = document.createElement('a');
-                    var url = window.URL.createObjectURL(blob);
-                    a.href = url;
-
-                    // Forzar la extensión correcta
-                    var extension = blob.type.split('/')[1];
-                    let nombreArchivo = prompt("Ingrese el nombre del archivo a guardar");
-                    if (nombreArchivo.length == 0) {
-                        nombreArchivo = "QR";
-                    }
-                    var filename = nombreArchivo + '.' + extension;
-                    a.download = filename; // Nombre del archivo con la extensión correcta
-                    document.body.appendChild(a);
-                    a.click();
-
-                    // Limpiar
-                    window.URL.revokeObjectURL(url);
-                    document.body.removeChild(a);
-                    logMessage('Descarga completada: ' + filename);
-                })
-                .catch(err => {
-                    logMessage('Error al descargar la imagen: ' + err);
-                    console.error('Error al descargar la imagen: ', err);
-                });
+            logMessage('contenedorQR no tiene un segundo hijo.');
         }
     } else {
-        logMessage('El source no apunta a una imagen válida.');
-        console.error('El source no apunta a una imagen válida.');
+        logMessage('contenedorQR no encontrado.');
     }
 });
 
