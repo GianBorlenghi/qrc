@@ -227,11 +227,19 @@ document.getElementById("download").addEventListener('click', function (e) {
                 logMessage('El segundo hijo es una imagen.');
 
                 var source = elemento.src;
-                logMessage('Valor del source: ' + source);
+                logMessage('Valor del source antes de la descarga: ' + source);
+
+                // Si el `src` está vacío, mostrar un mensaje de error.
+                if (!source || source === 'null') {
+                    logMessage('El source de la imagen es nulo o vacío. Asegúrate de que la imagen se haya cargado correctamente.');
+                    alert('La imagen no está lista para descargar. Intenta nuevamente.');
+                    return;
+                }
 
                 // Verificar si el src realmente apunta a una imagen
                 if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
                     logMessage('El source apunta a una imagen válida.');
+
                     // Código para manejar la imagen (móvil/desktop)...
                 } else {
                     logMessage('El source no apunta a una imagen válida.');
