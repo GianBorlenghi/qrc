@@ -43,23 +43,9 @@ figure {
     height: 80px;
 }
 
-nav ul>li {
-    display: inline-block;
-    padding: 5px;
-    margin-left: 30px;
-}
 
-nav ul {
-    position: absolute;
-    right: 10px;
-  
-}
 
-nav ul>li a {
-    border: 1px solid rgba(44, 116, 179, .3);
-    border-radius: 10px;
-    z-index: 100;
-}
+
 
 nav ul>li a:hover {
     background-color: #2C74B3;

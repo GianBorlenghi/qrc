@@ -163,7 +163,7 @@ formulario.addEventListener('submit', (e) => {
     console.log(this.act)
 });
 
-document.getElementById("download").addEventListener('click', (e) => {
+/*document.getElementById("download").addEventListener('click', (e) => {
   
 
     e.preventDefault();
@@ -203,6 +203,47 @@ if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
 } else {
     console.error('El source no apunta a una imagen válida.');
 }
+});*/
+document.getElementById("download").addEventListener('click', (e) => {
+    e.preventDefault();
+    var source = document.getElementById("contenedorQR").children[1].src;
+
+    // Verificar que el src realmente apunta a una imagen
+    if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
+        // Detectar si estamos en un dispositivo móvil
+        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+        if (isMobile) {
+            // En móviles, simplemente abre la imagen en una nueva pestaña
+            window.open(source, '_blank');
+        } else {
+            fetch(source)
+                .then(res => res.blob())
+                .then(blob => {
+                    var a = document.createElement('a');
+                    var url = window.URL.createObjectURL(blob);
+                    a.href = url;
+
+                    // Forzar la extensión correcta
+                    var extension = blob.type.split('/')[1];
+                    let nombreArchivo = prompt("Ingrese el nombre del archivo a guardar");
+                    if (nombreArchivo.length == 0) {
+                        nombreArchivo = "QR";
+                    }
+                    var filename = nombreArchivo + '.' + extension;
+                    a.download = filename; // Nombre del archivo con la extensión correcta
+                    document.body.appendChild(a);
+                    a.click();
+
+                    // Limpiar
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                })
+                .catch(err => console.error('Error al descargar la imagen: ', err));
+        }
+    } else {
+        console.error('El source no apunta a una imagen válida.');
+    }
 });
 
 formulario_whatsapp.addEventListener('submit', (e) => {
