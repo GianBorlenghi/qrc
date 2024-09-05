@@ -204,19 +204,31 @@ if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
     console.error('El source no apunta a una imagen válida.');
 }
 });*/
-document.getElementById("download").addEventListener('click', (e) => {
+document.getElementById("download").addEventListener('click', function (e) {
     e.preventDefault();
     var source = document.getElementById("contenedorQR").children[1].src;
 
-    // Verificar que el src realmente apunta a una imagen
+    // Verificar si el source apunta a una imagen válida
     if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
-        // Detectar si estamos en un dispositivo móvil
+        // Detectar si es un móvil
         var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
         if (isMobile) {
-            // En móviles, simplemente abre la imagen en una nueva pestaña
-            window.open(source, '_blank');
+            // Para móviles, simplemente abrir el enlace en una nueva ventana
+            let nombreArchivo = prompt("Ingrese el nombre del archivo a guardar");
+            if (nombreArchivo.length == 0) {
+                nombreArchivo = "QR";
+            }
+            var a = document.createElement('a');
+            a.href = source; // El enlace a la imagen
+            a.download = nombreArchivo + ".png"; // Nombre del archivo
+            a.target = "_blank"; // Para abrir en una nueva ventana
+
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a); // Limpiar el DOM
         } else {
+            // Para computadoras de escritorio, seguir con la descarga de blob
             fetch(source)
                 .then(res => res.blob())
                 .then(blob => {
