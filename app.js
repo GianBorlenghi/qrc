@@ -204,20 +204,32 @@ if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
     console.error('El source no apunta a una imagen válida.');
 }
 });*/
+
+function logMessage(msg) {
+    document.getElementById('error-log').innerText += msg + '\n';
+}
 document.getElementById("download").addEventListener('click', function (e) {
     e.preventDefault();
-    var source = document.getElementById("contenedorQR").children[1].src;
+    logMessage('Botón descargar presionado');
 
-    // Verificar que el src realmente apunta a una imagen
+    var source = document.getElementById("contenedorQR").children[1].src;
+    logMessage('Fuente de la imagen: ' + source);
+
+    // Verificar si el src realmente apunta a una imagen
     if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
+        logMessage('El source apunta a una imagen válida.');
+
         // Detectar si estamos en un dispositivo móvil
         var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        logMessage('Dispositivo móvil detectado: ' + isMobile);
 
         if (isMobile) {
-            // En móviles, abrir el archivo en una nueva pestaña
+            // En móviles, abrir la imagen en una nueva pestaña
+            logMessage('Intentando abrir en una nueva pestaña en móvil.');
             window.open(source, '_blank');
         } else {
-            // En escritorio, realizar la descarga como blob
+            // En escritorio, descargar el archivo como blob
+            logMessage('Intentando descargar la imagen en escritorio.');
             fetch(source)
                 .then(res => res.blob())
                 .then(blob => {
@@ -239,19 +251,20 @@ document.getElementById("download").addEventListener('click', function (e) {
                     // Limpiar
                     window.URL.revokeObjectURL(url);
                     document.body.removeChild(a);
+                    logMessage('Descarga completada: ' + filename);
                 })
-                .catch(err => console.error('Error al descargar la imagen: ', err));
+                .catch(err => {
+                    logMessage('Error al descargar la imagen: ' + err);
+                    console.error('Error al descargar la imagen: ', err);
+                });
         }
     } else {
+        logMessage('El source no apunta a una imagen válida.');
         console.error('El source no apunta a una imagen válida.');
     }
-    logMessage('Botón descargar presionado');
- 
 });
 
-function logMessage(msg) {
-    document.getElementById('error-log').innerText += msg + '\n';
-}
+
 
 formulario_whatsapp.addEventListener('submit', (e) => {
     e.preventDefault();
