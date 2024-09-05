@@ -208,27 +208,16 @@ document.getElementById("download").addEventListener('click', function (e) {
     e.preventDefault();
     var source = document.getElementById("contenedorQR").children[1].src;
 
-    // Verificar si el source apunta a una imagen válida
+    // Verificar que el src realmente apunta a una imagen
     if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
-        // Detectar si es un móvil
+        // Detectar si estamos en un dispositivo móvil
         var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
         if (isMobile) {
-            // Para móviles, simplemente abrir el enlace en una nueva ventana
-            let nombreArchivo = prompt("Ingrese el nombre del archivo a guardar");
-            if (nombreArchivo.length == 0) {
-                nombreArchivo = "QR";
-            }
-            var a = document.createElement('a');
-            a.href = source; // El enlace a la imagen
-            a.download = nombreArchivo + ".png"; // Nombre del archivo
-            a.target = "_blank"; // Para abrir en una nueva ventana
-
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a); // Limpiar el DOM
+            // En móviles, abrir el archivo en una nueva pestaña
+            window.open(source, '_blank');
         } else {
-            // Para computadoras de escritorio, seguir con la descarga de blob
+            // En escritorio, realizar la descarga como blob
             fetch(source)
                 .then(res => res.blob())
                 .then(blob => {
