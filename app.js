@@ -6,7 +6,7 @@ const a = document.getElementById('nav');
 const elem = document.getElementsByClassName('nav-link');
 const forms = document.getElementsByClassName('formulario');
 const QR = new QRCode(contenedorQR);
-QR._android = true;
+QRCode.CorrectLevel.L
 
 var act = "url";
 
@@ -159,7 +159,6 @@ $(function () {
 
 
 formulario.addEventListener('submit', (e) => {
-    console.log("HOlas")
     e.preventDefault();
     QR.makeCode(formulario.link.value);
     document.getElementById("download").classList.remove("hide")
