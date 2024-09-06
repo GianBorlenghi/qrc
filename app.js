@@ -7,7 +7,7 @@ const elem = document.getElementsByClassName('nav-link');
 const forms = document.getElementsByClassName('formulario');
 const QR = new QRCode(contenedorQR);
 QR._android = true;
-QR._oDrawing._android = true;
+
 var act = "url";
 
 
@@ -159,10 +159,11 @@ $(function () {
 
 
 formulario.addEventListener('submit', (e) => {
+    console.log("HOlas")
     e.preventDefault();
     QR.makeCode(formulario.link.value);
     document.getElementById("download").classList.remove("hide")
-    console.log(this.act)
+
 });
 /*document.getElementById("download").addEventListener('click', (e) => {
   
@@ -201,32 +202,7 @@ if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
 }
 });*/
 
-document.getElementById("download").addEventListener('click', (e) => {
-    e.preventDefault();
-    
-    var img = document.getElementById("contenedorQR").children[1];
-    var source = img.src;
 
-    // Verificar si es una imagen válida
-    if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
-        fetch(source)
-            .then(res => res.blob())
-            .then(blob => {
-                let nombreArchivo = prompt("Ingrese el nombre del archivo a guardar");
-                if (nombreArchivo.length == 0) {
-                    nombreArchivo = "QR";
-                }
-                var extension = blob.type.split('/')[1];
-                var filename = nombreArchivo + '.' + extension;
-                
-                // Utilizar FileSaver.js para descargar el archivo
-                saveAs(blob, filename);
-            })
-            .catch(err => console.error('Error al descargar la imagen: ', err));
-    } else {
-        console.error('El source no apunta a una imagen válida.');
-    }
-});
 
 
 
@@ -236,6 +212,7 @@ formulario_whatsapp.addEventListener('submit', (e) => {
 
     QR.makeCode("https://wa.me/" + formulario_wsp.celular.value + "/?text=" + txt.split(" ").join("%20")) + "%20";
     document.getElementById("download").classList.remove("hide")
+    console.log(QR._el)
 
 });
 
@@ -249,7 +226,7 @@ formulario_mail.addEventListener('submit', (e) => {
     e.preventDefault();
     const asunto = formulario_mail.asunto.value;
     const cuerpo = formulario_mail.texto.value
-    QR.makeCode("mailto:"+formulario_mail.mail.value+"?subject="+asunto.split(" ").join("%20")+"&body="+cuerpo.split(" ").join("%20"));
+    QR.makeCode("mailto:" + formulario_mail.mail.value + "?subject=" + asunto.split(" ").join("%20") + "&body=" + cuerpo.split(" ").join("%20"));
     console.log(QR)
     document.getElementById("download").classList.remove("hide")
 });
@@ -274,7 +251,7 @@ a.addEventListener('click', (e) => {
             form_wsp.classList.remove('hide');
             document.getElementById("btn2").classList.remove("hide");
             document.getElementById("uploadButton").classList.add("hide");
-
+            collapse()
             break;
         case 'url':
 
@@ -284,7 +261,7 @@ a.addEventListener('click', (e) => {
             document.getElementById('formulario').classList.remove('hide');
             document.getElementById("btn2").classList.remove("hide");
             document.getElementById("uploadButton").classList.add("hide");
-            QR.delete()
+            collapse()
             break;
 
         case 'geo':
@@ -295,7 +272,7 @@ a.addEventListener('click', (e) => {
             document.getElementById('formulario_geo').classList.remove('hide');
             document.getElementById("btn2").classList.add("hide");
             document.getElementById("uploadButton").classList.add("hide");
-
+            collapse()
 
             break;
 
@@ -307,10 +284,10 @@ a.addEventListener('click', (e) => {
             document.getElementById('formulario_archivo').classList.remove('hide');
             document.getElementById("btn2").classList.add("hide");
             document.getElementById("uploadButton").classList.remove("hide");
-
+            collapse()
 
             break;
-            case 'mail':
+        case 'mail':
 
             for (let i = 0; i < forms.length; i++) {
                 forms[i].classList.add('hide');
@@ -319,7 +296,7 @@ a.addEventListener('click', (e) => {
             document.getElementById("btn2").classList.add("hide");
             document.getElementById("uploadButton").classList.add("hide");
 
-
+            collapse()
             break;
 
 
@@ -329,8 +306,35 @@ a.addEventListener('click', (e) => {
             break;
     }
 })
-
-
-function getQR(){
-    return QR;
+function collapse() {
+    $("#botonExpand").attr("aria-expanded", "false")
+    $("#botonExpand").addClass("collapsed")
+    $("#navbarNavDropdown").removeClass("show")
 }
+
+document.getElementById("download").addEventListener('click', (e) => {
+    e.preventDefault();
+
+    var img = document.getElementById("contenedorQR").children[1];
+    var source = img.src;
+
+    // Verificar si es una imagen válida
+    if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
+        fetch(source)
+            .then(res => res.blob())
+            .then(blob => {
+                let nombreArchivo = prompt("Ingrese el nombre del archivo a guardar");
+                if (nombreArchivo.length == 0) {
+                    nombreArchivo = "QR";
+                }
+                var extension = blob.type.split('/')[1];
+                var filename = nombreArchivo + '.' + extension;
+
+                // Utilizar FileSaver.js para descargar el archivo
+                saveAs(blob, filename);
+            })
+            .catch(err => console.error('Error al descargar la imagen: ', err));
+    } else {
+        console.error('El source no apunta a una imagen válida.');
+    }
+});
