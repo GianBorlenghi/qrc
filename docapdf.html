@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert .docx to PDF</title>
+</head>
+<body>
+    <h1>Convert .docx to PDF</h1>
+    <input type="file" id="fileInput" accept=".doc,.docx" />
+    <button id="convertBtn">Convert to PDF</button>
+
+    <!-- Incluye Mammoth.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+
+    <!-- Incluye jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- Incluye DOMPurify -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.10/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    
+    
+    
+    <script>
+        const input = document.getElementById("fileInput");
+        const convertBtn = document.getElementById("convertBtn");
+
+        convertBtn.addEventListener("click", () => {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function(event) {
+                    const arrayBuffer = event.target.result;
+
+                    // Convert DOCX to HTML using Mammoth.js
+                    mammoth.convertToHtml({arrayBuffer: arrayBuffer})
+                        .then(function(resultObject) {
+                            const htmlContent = resultObject.value; // HTML content of the docx file
+
+                            // Now convert the HTML content to PDF using jsPDF
+                            const { jsPDF } = window.jspdf;
+                            const doc = new jsPDF();
+                            doc.html(htmlContent, {
+                                callback: function (pdf) {
+                                    pdf.save("document.pdf");
+                                },
+                                x: 10,
+                                y: 10
+                            });
+                        })
+                        .catch(function(err) {
+                            console.log(err.message);
+                        });
+                };
+
+                reader.readAsArrayBuffer(file);
+            } else {
+                alert("Please select a .doc or .docx file.");
+            }
+        });
+    </script>
+</body>
+</html>

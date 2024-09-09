@@ -153,7 +153,6 @@ var vcard = {
 
 $(function () {
     $('input[name="submit"]').click(vcard.save);
-
 });
 
 
@@ -211,14 +210,15 @@ formulario_whatsapp.addEventListener('submit', (e) => {
 
     QR.makeCode("https://wa.me/" + formulario_wsp.celular.value + "/?text=" + txt.split(" ").join("%20")) + "%20";
     document.getElementById("download").classList.remove("hide")
-    console.log(QR._el)
 
 });
 
 formulario_geo.addEventListener('submit', (e) => {
     e.preventDefault();
+   // document.getElementById("download").classList.remove("hide")
+    console.log("Ho")
     QR.makeCode(vcard.form);
-    document.getElementById("download").classList.remove("hide")
+    //document.getElementById("download").classList.remove("hide")
 });
 
 formulario_mail.addEventListener('submit', (e) => {
@@ -250,6 +250,8 @@ a.addEventListener('click', (e) => {
             form_wsp.classList.remove('hide');
             document.getElementById("btn2").classList.remove("hide");
             document.getElementById("uploadButton").classList.add("hide");
+            $("#download").addClass("hide");
+
             collapse()
             break;
         case 'url':
@@ -260,17 +262,20 @@ a.addEventListener('click', (e) => {
             document.getElementById('formulario').classList.remove('hide');
             document.getElementById("btn2").classList.remove("hide");
             document.getElementById("uploadButton").classList.add("hide");
+            $("#download").addClass("hide");
+
             collapse()
             break;
 
         case 'geo':
-
             for (let i = 0; i < forms.length; i++) {
                 forms[i].classList.add('hide');
             }
             document.getElementById('formulario_geo').classList.remove('hide');
             document.getElementById("btn2").classList.add("hide");
             document.getElementById("uploadButton").classList.add("hide");
+            $("#download").removeClass("hide");
+
             collapse()
 
             break;
@@ -283,6 +288,8 @@ a.addEventListener('click', (e) => {
             document.getElementById('formulario_archivo').classList.remove('hide');
             document.getElementById("btn2").classList.add("hide");
             document.getElementById("uploadButton").classList.remove("hide");
+            $("#download").addClass("hide");
+
             collapse()
 
             break;
@@ -294,6 +301,7 @@ a.addEventListener('click', (e) => {
             document.getElementById('formulario_mail').classList.remove('hide');
             document.getElementById("btn2").classList.add("hide");
             document.getElementById("uploadButton").classList.add("hide");
+            $("#download").addClass("hide");
 
             collapse()
             break;
