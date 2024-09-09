@@ -6,6 +6,7 @@ const a = document.getElementById('nav');
 const elem = document.getElementsByClassName('nav-link');
 const forms = document.getElementsByClassName('formulario');
 const QR = new QRCode(contenedorQR);
+var googleMapsUrl = "";
 QRCode.CorrectLevel.L
 
 var act = "url";
@@ -163,6 +164,12 @@ formulario.addEventListener('submit', (e) => {
     document.getElementById("download").classList.remove("hide")
 
 });
+
+formulario_ubi.addEventListener('submit', (e) => {
+    e.preventDefault();
+    document.getElementById("download").classList.remove("hide")
+
+});
 /*document.getElementById("download").addEventListener('click', (e) => {
   
 
@@ -209,6 +216,12 @@ formulario_whatsapp.addEventListener('submit', (e) => {
     const txt = formulario_wsp.texto.value
 
     QR.makeCode("https://wa.me/" + formulario_wsp.celular.value + "/?text=" + txt.split(" ").join("%20")) + "%20";
+    document.getElementById("download").classList.remove("hide")
+
+});
+formulario_ubi.addEventListener('submit', (e) => {
+    e.preventDefault();
+    QR.makeCode(googleMapsUrl)
     document.getElementById("download").classList.remove("hide")
 
 });
@@ -306,6 +319,19 @@ a.addEventListener('click', (e) => {
             collapse()
             break;
 
+            case 'ubi':
+
+            for (let i = 0; i < forms.length; i++) {
+                forms[i].classList.add('hide');
+            }
+            document.getElementById('formulario_ubi').classList.remove('hide');
+            document.getElementById("btn2").classList.add("hide");
+            document.getElementById("uploadButton").classList.add("hide");
+            $("#download").addClass("hide");
+
+            collapse()
+            break;
+
 
 
 
@@ -345,3 +371,23 @@ document.getElementById("download").addEventListener('click', (e) => {
         console.error('El source no apunta a una imagen válida.');
     }
 });
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        alert("La geolocalización no es soportada por este navegador.");
+    }
+}
+
+// Función para mostrar la ubicación y generar el QR
+function showPosition(position) {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+    googleMapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+    
+    // Mostrar el enlace de Google Maps
+    const mapLink = document.getElementById("mapLink");
+    mapLink.innerHTML = `<a href="${googleMapsUrl}" target="_blank">Ver ubicación en Google Maps</a>`;
+   
+}

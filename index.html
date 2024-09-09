@@ -41,7 +41,7 @@
 		</button>
 		<figure>
 			<a href="./index.html"><img class="logo" src="./img/cens.png" alt=""></a>
-		  </figure>
+		</figure>
 		<div class="collapse navbar-collapse" id="navbarNavDropdown" style="height:100px">
 			<ul class="navbar-nav" id="nav">
 				<li class="nav-item">
@@ -61,13 +61,18 @@
 					<a class="nav-link" href="#" id="mail">QR Envío mail</a>
 				</li>
 
+				<li class="nav-item">
+					<a class="nav-link" href="#" id="ubi">QR Ubicación</a>
+				</li>
+
 			</ul>
-			
+
 			<a class="nav-link" href="lectorQR.html">Lector QR</a>
 
 		</div>
 	</nav>
-  </header>
+</header>
+
 <body>
 	<!---->
 	<div class="contenedor">
@@ -130,13 +135,22 @@
 			<button class="btn">Generar QR</button>
 		</form>
 
+		<form action="" id="formulario_ubi" class="formulario hide">
+
+			<button onclick="getLocation()" class="btn">Obtener ubicación y generar QR</button>
+
+			<div id="mapLink" style="margin-top: 20px;"></div>
+		</form>
+
 		<form action="" id="formulario_archivo" class="formulario hide">
 			<input style="padding:10px;" type="file" id="fileInput">
 		</form>
+
 		<button id="uploadButton" class="hide">Subir y generar QR</button>
 
 		<div id="contenedorQR" class="contenedorQR"></div>
-		<button id="download" class="hide" style="width: 140px;height: 40px; background-color: grey;color:red;">Descargar</button>
+		<button id="download" class="hide"
+			style="width: 140px;height: 40px; background-color: grey;color:red;">Descargar</button>
 	</div>
 
 
@@ -161,7 +175,7 @@
 
 		document.getElementById('uploadButton').addEventListener('click', async function () {
 			document.getElementById("uploadButton").innerText = "Generando..."
-			$("#uploadButton").prop('disabled',true)
+			$("#uploadButton").prop('disabled', true)
 			const fileInput = document.getElementById('fileInput').files[0];
 
 			if (!fileInput) {
@@ -185,17 +199,17 @@
 			 });*/
 			document.getElementById("download").classList.remove("hide")
 			QR.makeCode(fileURL)
-			document.getElementById("uploadButton").innerText ="Subir y generar QR"
-			$("#uploadButton").prop('disabled',false)
+			document.getElementById("uploadButton").innerText = "Subir y generar QR"
+			$("#uploadButton").prop('disabled', false)
 			//QR.makeCode(fileURL)
 		});
 
 	</script>
 
-<div id="respuesta">
+	<div id="respuesta">
 
 
-</div>
+	</div>
 </body>
 
 </html>
