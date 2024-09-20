@@ -158,11 +158,53 @@ $(function () {
 
 
 
+/*formulario.addEventListener('submit', (e) => {
+    e.preventDefault();
+    setTimeout(() => {
+        QR.makeCode(formulario.link.value)
+        document.getElementById("download").classList.remove("hide");
+        var canvas = document.querySelector('canvas');  // Asegúrate de seleccionar el canvas donde se genera el QR
+        var img = canvas.firstChild;
+        //img.src = canvas.toDataURL("image/png");
+    
+        // Luego asegúrate de que la imagen esté asignada al contenedor
+        console.log(img)
+    }, 500);
+});*/
+
 formulario.addEventListener('submit', (e) => {
     e.preventDefault();
-    QR.makeCode(formulario.link.value);
-    document.getElementById("download").classList.remove("hide")
 
+    // Genera el QR con el valor del formulario
+    QR.makeCode(formulario.link.value);
+
+    // Mostrar el botón de descarga
+    document.getElementById("download").classList.remove("hide");
+
+    // Esperar un tiempo para asegurarse de que el QR se haya generado
+    setTimeout(() => {
+        // Verifica si el canvas se generó
+        var canvas = document.querySelector('canvas');
+        
+        if (canvas) {
+            // Convertir el canvas a una imagen en base64
+            var imgSrc = canvas.toDataURL("image/png");
+
+            // Crear una nueva imagen o seleccionar la existente en el contenedor
+            var img = document.querySelector('#contenedorQR img') || document.createElement('img');
+            img.src = imgSrc;
+
+            // Si es una nueva imagen, añadirla al contenedor
+            var contenedorQR = document.getElementById("contenedorQR");
+            if (!contenedorQR.contains(img)) {
+                contenedorQR.appendChild(img);
+            }
+
+            console.log("Imagen generada correctamente con src:", imgSrc);
+        } else {
+            console.error("No se encontró el canvas. Verifica si el QR se genera correctamente.");
+        }
+    }, 500);  // 500 ms de retardo para asegurar que el QR se haya generado
 });
 
 formulario_ubi.addEventListener('submit', (e) => {
@@ -228,7 +270,7 @@ formulario_ubi.addEventListener('submit', (e) => {
 
 formulario_geo.addEventListener('submit', (e) => {
     e.preventDefault();
-   // document.getElementById("download").classList.remove("hide")
+    // document.getElementById("download").classList.remove("hide")
     console.log("Ho")
     QR.makeCode(vcard.form);
     //document.getElementById("download").classList.remove("hide")
@@ -319,7 +361,7 @@ a.addEventListener('click', (e) => {
             collapse()
             break;
 
-            case 'ubi':
+        case 'ubi':
 
             for (let i = 0; i < forms.length; i++) {
                 forms[i].classList.add('hide');
@@ -385,9 +427,9 @@ function showPosition(position) {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
     googleMapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
-    
+
     // Mostrar el enlace de Google Maps
     const mapLink = document.getElementById("mapLink");
     mapLink.innerHTML = `<a href="${googleMapsUrl}" target="_blank">Ver ubicación en Google Maps</a>`;
-   
+
 }
