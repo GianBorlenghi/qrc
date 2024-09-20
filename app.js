@@ -8,7 +8,7 @@ const forms = document.getElementsByClassName('formulario');
 const QR = new QRCode(contenedorQR);
 var googleMapsUrl = "";
 QRCode.CorrectLevel.L
-
+var urlGoogleMaps = "";
 var act = "url";
 
 
@@ -210,7 +210,32 @@ formulario.addEventListener('submit', (e) => {
 formulario_ubi.addEventListener('submit', (e) => {
     e.preventDefault();
     document.getElementById("download").classList.remove("hide")
+    setTimeout(() => {
+        // Verifica si el canvas se generó
+        QR.makeCode(this.urlGoogleMaps)
 
+        var canvas = document.querySelector('canvas');
+        
+        if (canvas) {
+            // Convertir el canvas a una imagen en base64
+            var imgSrc = canvas.toDataURL("image/png");
+
+            // Crear una nueva imagen o seleccionar la existente en el contenedor
+            var img = document.querySelector('#contenedorQR img') || document.createElement('img');
+            img.src = imgSrc;
+
+            // Si es una nueva imagen, añadirla al contenedor
+            var contenedorQR = document.getElementById("contenedorQR");
+            if (!contenedorQR.contains(img)) {
+                contenedorQR.appendChild(img);
+            }
+
+            console.log("Imagen generada correctamente con src:", imgSrc);
+        } else {
+            console.error("No se encontró el canvas. Verifica si el QR se genera correctamente.");
+        }
+    }, 500);
+    
 });
 /*document.getElementById("download").addEventListener('click', (e) => {
   
@@ -259,20 +284,89 @@ formulario_whatsapp.addEventListener('submit', (e) => {
 
     QR.makeCode("https://wa.me/" + formulario_wsp.celular.value + "/?text=" + txt.split(" ").join("%20")) + "%20";
     document.getElementById("download").classList.remove("hide")
+    setTimeout(() => {
+        // Verifica si el canvas se generó
+        var canvas = document.querySelector('canvas');
+        
+        if (canvas) {
+            // Convertir el canvas a una imagen en base64
+            var imgSrc = canvas.toDataURL("image/png");
 
+            // Crear una nueva imagen o seleccionar la existente en el contenedor
+            var img = document.querySelector('#contenedorQR img') || document.createElement('img');
+            img.src = imgSrc;
+
+            // Si es una nueva imagen, añadirla al contenedor
+            var contenedorQR = document.getElementById("contenedorQR");
+            if (!contenedorQR.contains(img)) {
+                contenedorQR.appendChild(img);
+            }
+
+            console.log("Imagen generada correctamente con src:", imgSrc);
+        } else {
+            console.error("No se encontró el canvas. Verifica si el QR se genera correctamente.");
+        }
+    }, 500);
 });
+
 formulario_ubi.addEventListener('submit', (e) => {
     e.preventDefault();
     QR.makeCode(googleMapsUrl)
     document.getElementById("download").classList.remove("hide")
+
+    setTimeout(() => {
+        // Verifica si el canvas se generó
+        var canvas = document.querySelector('canvas');
+        
+        if (canvas) {
+            // Convertir el canvas a una imagen en base64
+            var imgSrc = canvas.toDataURL("image/png");
+
+            // Crear una nueva imagen o seleccionar la existente en el contenedor
+            var img = document.querySelector('#contenedorQR img') || document.createElement('img');
+            img.src = imgSrc;
+
+            // Si es una nueva imagen, añadirla al contenedor
+            var contenedorQR = document.getElementById("contenedorQR");
+            if (!contenedorQR.contains(img)) {
+                contenedorQR.appendChild(img);
+            }
+
+            console.log("Imagen generada correctamente con src:", imgSrc);
+        } else {
+            console.error("No se encontró el canvas. Verifica si el QR se genera correctamente.");
+        }
+    }, 500);
 
 });
 
 formulario_geo.addEventListener('submit', (e) => {
     e.preventDefault();
     // document.getElementById("download").classList.remove("hide")
-    console.log("Ho")
     QR.makeCode(vcard.form);
+    setTimeout(() => {
+        // Verifica si el canvas se generó
+        var canvas = document.querySelector('canvas');
+        
+        if (canvas) {
+            // Convertir el canvas a una imagen en base64
+            var imgSrc = canvas.toDataURL("image/png");
+
+            // Crear una nueva imagen o seleccionar la existente en el contenedor
+            var img = document.querySelector('#contenedorQR img') || document.createElement('img');
+            img.src = imgSrc;
+
+            // Si es una nueva imagen, añadirla al contenedor
+            var contenedorQR = document.getElementById("contenedorQR");
+            if (!contenedorQR.contains(img)) {
+                contenedorQR.appendChild(img);
+            }
+
+            console.log("Imagen generada correctamente con src:", imgSrc);
+        } else {
+            console.error("No se encontró el canvas. Verifica si el QR se genera correctamente.");
+        }
+    }, 500);
     //document.getElementById("download").classList.remove("hide")
 });
 
@@ -283,6 +377,29 @@ formulario_mail.addEventListener('submit', (e) => {
     QR.makeCode("mailto:" + formulario_mail.mail.value + "?subject=" + asunto.split(" ").join("%20") + "&body=" + cuerpo.split(" ").join("%20"));
     console.log(QR)
     document.getElementById("download").classList.remove("hide")
+    setTimeout(() => {
+        // Verifica si el canvas se generó
+        var canvas = document.querySelector('canvas');
+        
+        if (canvas) {
+            // Convertir el canvas a una imagen en base64
+            var imgSrc = canvas.toDataURL("image/png");
+
+            // Crear una nueva imagen o seleccionar la existente en el contenedor
+            var img = document.querySelector('#contenedorQR img') || document.createElement('img');
+            img.src = imgSrc;
+
+            // Si es una nueva imagen, añadirla al contenedor
+            var contenedorQR = document.getElementById("contenedorQR");
+            if (!contenedorQR.contains(img)) {
+                contenedorQR.appendChild(img);
+            }
+
+            console.log("Imagen generada correctamente con src:", imgSrc);
+        } else {
+            console.error("No se encontró el canvas. Verifica si el QR se genera correctamente.");
+        }
+    }, 500);
 });
 
 
@@ -297,6 +414,7 @@ a.addEventListener('click', (e) => {
     const active = document.getElementsByClassName('active')[0].getAttribute('id')
     this.act = active;
     switch (active) {
+
         case 'wsp':
             const form_wsp = document.getElementById('formulario_whatsapp');
             for (let i = 0; i < forms.length; i++) {
@@ -306,7 +424,9 @@ a.addEventListener('click', (e) => {
             document.getElementById("btn2").classList.remove("hide");
             document.getElementById("uploadButton").classList.add("hide");
             $("#download").addClass("hide");
+            var img = document.querySelector('#contenedorQR img')
 
+            img.src = "";
             collapse()
             break;
         case 'url':
@@ -318,6 +438,9 @@ a.addEventListener('click', (e) => {
             document.getElementById("btn2").classList.remove("hide");
             document.getElementById("uploadButton").classList.add("hide");
             $("#download").addClass("hide");
+            var img = document.querySelector('#contenedorQR img')
+
+            img.src = "";
 
             collapse()
             break;
@@ -330,6 +453,9 @@ a.addEventListener('click', (e) => {
             document.getElementById("btn2").classList.add("hide");
             document.getElementById("uploadButton").classList.add("hide");
             $("#download").removeClass("hide");
+            var img = document.querySelector('#contenedorQR img')
+
+            img.src = "";
 
             collapse()
 
@@ -344,6 +470,9 @@ a.addEventListener('click', (e) => {
             document.getElementById("btn2").classList.add("hide");
             document.getElementById("uploadButton").classList.remove("hide");
             $("#download").addClass("hide");
+            var img = document.querySelector('#contenedorQR img')
+
+            img.src = "";
 
             collapse()
 
@@ -357,6 +486,9 @@ a.addEventListener('click', (e) => {
             document.getElementById("btn2").classList.add("hide");
             document.getElementById("uploadButton").classList.add("hide");
             $("#download").addClass("hide");
+            var img = document.querySelector('#contenedorQR img')
+
+            img.src = "";
 
             collapse()
             break;
@@ -370,6 +502,9 @@ a.addEventListener('click', (e) => {
             document.getElementById("btn2").classList.add("hide");
             document.getElementById("uploadButton").classList.add("hide");
             $("#download").addClass("hide");
+            var img = document.querySelector('#contenedorQR img')
+
+            img.src = "";
 
             collapse()
             break;
@@ -427,7 +562,7 @@ function showPosition(position) {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
     googleMapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
-
+    this.urlGoogleMaps=googleMapsUrl;
     // Mostrar el enlace de Google Maps
     const mapLink = document.getElementById("mapLink");
     mapLink.innerHTML = `<a href="${googleMapsUrl}" target="_blank">Ver ubicación en Google Maps</a>`;
