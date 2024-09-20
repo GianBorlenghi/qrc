@@ -201,6 +201,29 @@
 			QR.makeCode(fileURL)
 			document.getElementById("uploadButton").innerText = "Subir y generar QR"
 			$("#uploadButton").prop('disabled', false)
+			setTimeout(() => {
+        // Verifica si el canvas se generó
+        var canvas = document.querySelector('canvas');
+        
+        if (canvas) {
+            // Convertir el canvas a una imagen en base64
+            var imgSrc = canvas.toDataURL("image/png");
+
+            // Crear una nueva imagen o seleccionar la existente en el contenedor
+            var img = document.querySelector('#contenedorQR img') || document.createElement('img');
+            img.src = imgSrc;
+
+            // Si es una nueva imagen, añadirla al contenedor
+            var contenedorQR = document.getElementById("contenedorQR");
+            if (!contenedorQR.contains(img)) {
+                contenedorQR.appendChild(img);
+            }
+
+            console.log("Imagen generada correctamente con src:", imgSrc);
+        } else {
+            console.error("No se encontró el canvas. Verifica si el QR se genera correctamente.");
+        }
+    }, 2500); 
 			//QR.makeCode(fileURL)
 		});
 
