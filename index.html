@@ -188,17 +188,7 @@
 			await storageRef.put(fileInput);
 			const fileURL = await storageRef.getDownloadURL();
 
-			// Crear código QR con la URL del archivo
-			/* QRCode.makeCode(document.getElementById('qrcode'), fileURL, function (error) {
-				 if (error) {
-					 console.error(error);
-					 alert('No se pudo generar el código QR.');
-				 } else {
-					 console.log('Código QR generado con éxito.');
-				 }
-			 });*/
 			document.getElementById("download").classList.remove("hide")
-			QR.makeCode(fileURL)
 			document.getElementById("uploadButton").innerText = "Subir y generar QR"
 			$("#uploadButton").prop('disabled', false)
 			setTimeout(() => {
@@ -206,6 +196,8 @@
         var canvas = document.querySelector('canvas');
         
         if (canvas) {
+			QR.makeCode(fileURL)
+
             // Convertir el canvas a una imagen en base64
             var imgSrc = canvas.toDataURL("image/png");
 
@@ -223,8 +215,7 @@
         } else {
             console.error("No se encontró el canvas. Verifica si el QR se genera correctamente.");
         }
-    }, 2500); 
-			//QR.makeCode(fileURL)
+    }, 500); 
 		});
 
 	</script>

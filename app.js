@@ -524,7 +524,7 @@ function collapse() {
 
 document.getElementById("download").addEventListener('click', (e) => {
     e.preventDefault();
-
+    console.log("ad")
     var img = document.getElementById("contenedorQR").children[1];
     var source = img.src;
 
