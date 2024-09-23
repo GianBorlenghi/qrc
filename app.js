@@ -343,8 +343,10 @@ formulario_ubi.addEventListener('submit', (e) => {
 formulario_geo.addEventListener('submit', (e) => {
     e.preventDefault();
     // document.getElementById("download").classList.remove("hide")
-    QR.makeCode(vcard.form);
     setTimeout(() => {
+
+        QR.makeCode(vcard.form);
+
         // Verifica si el canvas se generó
         var canvas = document.querySelector('canvas');
         
