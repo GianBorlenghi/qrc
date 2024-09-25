@@ -221,8 +221,11 @@ formulario.addEventListener('submit', (e) => {
 });
 
 formulario_ubi.addEventListener('submit', (e) => {
+
     e.preventDefault();
     document.getElementById("download").classList.remove("hide")
+    this.getLocation();
+    this.
     setTimeout(() => {
         // Verifica si el canvas se generó
         QR.makeCode(this.urlGoogleMaps)
@@ -247,7 +250,7 @@ formulario_ubi.addEventListener('submit', (e) => {
         } else {
             console.error("No se encontró el canvas. Verifica si el QR se genera correctamente.");
         }
-    }, 1000);
+    }, 1500);
     
 });
 /*document.getElementById("download").addEventListener('click', (e) => {
@@ -548,10 +551,13 @@ function getLocation() {
 function showPosition(position) {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
-    googleMapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
-    this.urlGoogleMaps=googleMapsUrl;
-    // Mostrar el enlace de Google Maps
-    const mapLink = document.getElementById("mapLink");
-    mapLink.innerHTML = `<a href="${googleMapsUrl}" target="_blank">Ver ubicación en Google Maps</a>`;
+    setTimeout(()=>{
+        googleMapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+        this.urlGoogleMaps=googleMapsUrl;
+        // Mostrar el enlace de Google Maps
+        const mapLink = document.getElementById("mapLink");
+        mapLink.innerHTML = `<a href="${googleMapsUrl}" target="_blank">Ver ubicación en Google Maps</a>`;
+    },1000)
+
 
 }
