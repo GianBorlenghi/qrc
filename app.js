@@ -143,34 +143,47 @@ var vcard = {
         vcard.str_vcard += vcard.str_end;
 
         $('textarea[name="vcard"]').val(vcard.str_vcard);
-        QR.makeCode(vcard.str_vcard)
-        $('#qr').attr('src', vcard.goog_chart + vcard.str_vcard.replace(/\n/g, '%0A'));
+        setTimeout(() => {
+            // Verifica si el canvas se generó
+            QR.makeCode(vcard.str_vcard)
+            $('#qr').attr('src', vcard.goog_chart + vcard.str_vcard.replace(/\n/g, '%0A'));
+            vcard.str_vcard = vcard.str_start;
+            $("#download").removeClass("hide")
+            var canvas = document.querySelector('canvas');
+            
+            if (canvas) {
+                // Convertir el canvas a una imagen en base64
+                var imgSrc = canvas.toDataURL("image/png");
+    
+                // Crear una nueva imagen o seleccionar la existente en el contenedor
+                var img = document.querySelector('#contenedorQR img') || document.createElement('img');
+                img.src = imgSrc;
+    
+                // Si es una nueva imagen, añadirla al contenedor
+                var contenedorQR = document.getElementById("contenedorQR");
+                if (!contenedorQR.contains(img)) {
+                    contenedorQR.appendChild(img);
+                }
+    
+                console.log("Imagen generada correctamente con src:", imgSrc);
+            } else {
+                console.error("No se encontró el canvas. Verifica si el QR se genera correctamente.");
+            }
+        }, 1000);
 
-        vcard.str_vcard = vcard.str_start;
+
+        
 
 
     }
+  
 };
-
 $(function () {
-    $('input[name="submit"]').click(vcard.save);
+    setTimeout(()=>{
+        $('input[name="submit"]').click(vcard.save);
+    },2000)
 });
 
-
-
-/*formulario.addEventListener('submit', (e) => {
-    e.preventDefault();
-    setTimeout(() => {
-        QR.makeCode(formulario.link.value)
-        document.getElementById("download").classList.remove("hide");
-        var canvas = document.querySelector('canvas');  // Asegúrate de seleccionar el canvas donde se genera el QR
-        var img = canvas.firstChild;
-        //img.src = canvas.toDataURL("image/png");
-    
-        // Luego asegúrate de que la imagen esté asignada al contenedor
-        console.log(img)
-    }, 500);
-});*/
 
 formulario.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -234,7 +247,7 @@ formulario_ubi.addEventListener('submit', (e) => {
         } else {
             console.error("No se encontró el canvas. Verifica si el QR se genera correctamente.");
         }
-    }, 500);
+    }, 1000);
     
 });
 /*document.getElementById("download").addEventListener('click', (e) => {
@@ -309,39 +322,11 @@ formulario_whatsapp.addEventListener('submit', (e) => {
     }, 500);
 });
 
-formulario_ubi.addEventListener('submit', (e) => {
-    e.preventDefault();
-    QR.makeCode(googleMapsUrl)
-    document.getElementById("download").classList.remove("hide")
 
-    setTimeout(() => {
-        // Verifica si el canvas se generó
-        var canvas = document.querySelector('canvas');
-        
-        if (canvas) {
-            // Convertir el canvas a una imagen en base64
-            var imgSrc = canvas.toDataURL("image/png");
-
-            // Crear una nueva imagen o seleccionar la existente en el contenedor
-            var img = document.querySelector('#contenedorQR img') || document.createElement('img');
-            img.src = imgSrc;
-
-            // Si es una nueva imagen, añadirla al contenedor
-            var contenedorQR = document.getElementById("contenedorQR");
-            if (!contenedorQR.contains(img)) {
-                contenedorQR.appendChild(img);
-            }
-
-            console.log("Imagen generada correctamente con src:", imgSrc);
-        } else {
-            console.error("No se encontró el canvas. Verifica si el QR se genera correctamente.");
-        }
-    }, 500);
-
-});
 
 formulario_geo.addEventListener('submit', (e) => {
     e.preventDefault();
+    console.log ("Hola")
     // document.getElementById("download").classList.remove("hide")
     setTimeout(() => {
 
@@ -454,7 +439,7 @@ a.addEventListener('click', (e) => {
             document.getElementById('formulario_geo').classList.remove('hide');
             document.getElementById("btn2").classList.add("hide");
             document.getElementById("uploadButton").classList.add("hide");
-            $("#download").removeClass("hide");
+            $("#download").addClass("hide");
             var img = document.querySelector('#contenedorQR img')
 
             img.src = "";
