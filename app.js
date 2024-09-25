@@ -97,23 +97,49 @@ var vcard = {
     },
 
     required_check: function () {
-        var first_name = vcard.get_field("first_name"),
-            last_name = vcard.get_field("last_name"),
-            msg = 'Field%FIELD% %NAME% %VERB% required.',
-            fields = [];
-
-        if (first_name === '') { fields.push('First name'); }
-
-        if (last_name === '') { fields.push('Last name'); }
-
-        if (fields.length === 0) { return ''; }
-
-        msg = msg.replace('%NAME%', fields.join(', '));
-
-        msg = msg.replace('%FIELD%', (fields.length === 1) ? '' : 's');
-
-        msg = msg.replace('%VERB%', (fields.length === 1) ? 'is' : 'are');
-
+        var fieldsToCheck = [
+            { field: "first_name", label: "nombre" },
+            { field: "last_name", label: "apellido" },
+            { field: "birthday", label: "fecha de nacimiento" },
+            { field: "gender", label: "género" },
+            { field: "home_street", label: "calle de casa" },
+            { field: "home_city", label: "ciudad de casa" },
+            { field: "home_region", label: "región de casa" },
+            { field: "home_post", label: "código postal de casa" },
+            { field: "home_country", label: "país de casa" },
+            { field: "org_name", label: "nombre de la organización" },
+            { field: "org_title", label: "título de la organización" },
+            { field: "org_street", label: "calle del trabajo" },
+            { field: "org_city", label: "ciudad del trabajo" },
+            { field: "org_region", label: "región del trabajo" },
+            { field: "org_post", label: "código postal del trabajo" },
+            { field: "org_country", label: "país del trabajo" },
+            { field: "home_tel", label: "teléfono personal" },
+            { field: "org_tel", label: "teléfono del trabajo" },
+            { field: "home_email", label: "correo electrónico personal" },
+            { field: "org_email", label: "correo electrónico del trabajo" },
+            { field: "home_url", label: "URL personal" },
+            { field: "org_url", label: "URL del trabajo" }
+        ];
+    
+        var missingFields = [];
+    
+        // Verificar si alguno de los campos obligatorios está vacío
+        fieldsToCheck.forEach(function (item) {
+            var value = vcard.get_field(item.field);
+            if (value === '') {
+                missingFields.push(item.label);
+            }
+        });
+    
+        // Si no faltan campos, devolver una cadena vacía
+        if (missingFields.length === 0) {
+            return '';
+        }
+    
+        // Generar el mensaje de error con los campos faltantes
+        var msg = 'Campo' + (missingFields.length > 1 ? 's ' : ' ') + missingFields.join(', ') + ' ' + (missingFields.length > 1 ? 'son' : 'es') + ' requeridos.';
+    
         return msg;
     },
     save: function () {
@@ -188,8 +214,13 @@ $(function () {
 formulario.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    // Genera el QR con el valor del formulario
-    QR.makeCode(formulario.link.value);
+    // Genera el QR con el valor del formulariov
+    var linkValue = formulario.link.value.trim();    
+    if (linkValue === '') {
+        alert('El campo no puede estar vacío. Por favor, ingresa un valor.');
+        return;  
+    }
+    QR.makeCode(linkValue);
 
     // Mostrar el botón de descarga
     document.getElementById("download").classList.remove("hide");
@@ -297,6 +328,11 @@ if (source.startsWith("data:image") || /\.(jpg|jpeg|png|gif)$/.test(source)) {
 formulario_whatsapp.addEventListener('submit', (e) => {
     e.preventDefault();
     const txt = formulario_wsp.texto.value
+    var celular = formulario_wsp.celular.value.trim();
+    if (celular === '') {
+        alert('El campo número de celular no puede estar vacío. Por favor, ingresa uno.');
+        return;  
+    }
 
     QR.makeCode("https://wa.me/" + formulario_wsp.celular.value + "/?text=" + txt.split(" ").join("%20")) + "%20";
     document.getElementById("download").classList.remove("hide")
@@ -329,8 +365,6 @@ formulario_whatsapp.addEventListener('submit', (e) => {
 
 formulario_geo.addEventListener('submit', (e) => {
     e.preventDefault();
-    console.log ("Hola")
-    // document.getElementById("download").classList.remove("hide")
     setTimeout(() => {
 
         QR.makeCode(vcard.form);
@@ -362,8 +396,13 @@ formulario_geo.addEventListener('submit', (e) => {
 
 formulario_mail.addEventListener('submit', (e) => {
     e.preventDefault();
-    const asunto = formulario_mail.asunto.value;
-    const cuerpo = formulario_mail.texto.value
+    const asunto = formulario_mail.asunto.value.trim();
+    const cuerpo = formulario_mail.texto.value.trim()
+    const mail_to = formulario_mail.mail.value.trim();
+    if(asunto == '' || mail_to == ''){
+        alert('Hay campos vacíos, verifique la información ingresada.');
+        return;  
+    }
     QR.makeCode("mailto:" + formulario_mail.mail.value + "?subject=" + asunto.split(" ").join("%20") + "&body=" + cuerpo.split(" ").join("%20"));
     console.log(QR)
     document.getElementById("download").classList.remove("hide")
